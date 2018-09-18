@@ -11,6 +11,6 @@ class AuditSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(App\Audit::class, 5)->create();
     }
 }

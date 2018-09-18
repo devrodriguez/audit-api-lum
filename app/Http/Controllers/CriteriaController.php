@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Criteria;
+
 class CriteriaController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class CriteriaController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Criteria::all());
     }
 
     /**
@@ -24,7 +26,13 @@ class CriteriaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $criteria = Criteria::create($data);
+
+        return response()->json([
+            'criteria' => $criteria,
+            'url' => "/api/auditors/{$criteria->id}"
+        ], 201);
     }
 
     /**
@@ -35,7 +43,7 @@ class CriteriaController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Criteria::findOrFail($id));
     }
 
     /**
@@ -47,7 +55,11 @@ class CriteriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $criteria = Criteria::findOrFail($id);
+        $criteria->update($data);
+
+        return response()->json($criteria, 200);
     }
 
     /**
@@ -58,6 +70,11 @@ class CriteriaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Criteria::findOrFail($id)->delete();
+
+        return response()->json([
+            'message' => 'Deleted successfull',
+            'url' => '/api/criterias'
+        ]);
     }
 }

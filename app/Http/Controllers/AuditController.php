@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+use App\Audit;
 
 class AuditController extends Controller
 {
@@ -13,7 +16,11 @@ class AuditController extends Controller
      */
     public function index()
     {
-        //
+        $audits = DB::table('audits')
+        ->join('auditors', 'audits.auditor_id', 'auditors.id')
+        ->select('auditors.*', 'audits.*')
+        ->get();
+        return response()->json($audits);
     }
 
     /**
@@ -24,7 +31,13 @@ class AuditController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $audit = Audit::create($data);
+
+        return response()->json([
+            'audit' => $audit,
+            'url' => "/audits/{$audit->id}"
+        ], 201);
     }
 
     /**
@@ -35,7 +48,7 @@ class AuditController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Audit::findOrFail($id));
     }
 
     /**
@@ -47,7 +60,10 @@ class AuditController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $audit = Audit::findOrFail($id);
+        $audit->update($data);
+        return response()->json($audit, 200);
     }
 
     /**
@@ -58,6 +74,11 @@ class AuditController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $audit = Audit::findOrFail($id);
+        $audit->delete();
+        return response()->json([
+            'message' => 'Deleted successfully',
+            'url' => '/audits'
+        ], 200);
     }
 }

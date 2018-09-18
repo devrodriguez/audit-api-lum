@@ -13,7 +13,7 @@ class EnterpriseSeeder extends Seeder
      */
     public function run()
     {
-        Enterprise::truncate();
+        //Enterprise::truncate();
         factory(Enterprise::class, 10)->create();
     }
 }

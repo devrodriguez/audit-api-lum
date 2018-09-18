@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Auditor;
 
@@ -16,7 +17,16 @@ class AuditorController extends Controller
     public function index()
     {
         $auditors = Auditor::all();
-        return $auditors;
+        return response()->json($auditors);
+    }
+
+    public function full() {
+        $rolesUser = DB::table('auditors')
+        ->join('roles', 'auditors.role_id', '=', 'roles.id')
+        ->select('auditors.*', 'roles.*')
+        ->get();
+
+        return response()->json($rolesUser);
     }
 
     /**
@@ -27,7 +37,13 @@ class AuditorController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $auditor = Auditor::create($data);
+
+        return response()->json([
+            'auditor' => $auditor,
+            'url' => "/auditors/{$auditor->id}"
+        ], 201);
     }
 
     /**
@@ -38,7 +54,7 @@ class AuditorController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Auditor::findOrFail($id));
     }
 
     /**
@@ -50,7 +66,11 @@ class AuditorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $auditor = Auditor::findOrFail($id);
+        $auditor->update($data);
+
+        return response()->json($auditor, 200);
     }
 
     /**
@@ -61,6 +81,11 @@ class AuditorController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $auditor = Auditor::findOrFail($id);
+        $auditor->delete();
+        return response()->json([
+            'message' => 'Deleted successfully',
+            'url' => '/api/auditors'
+        ], 200);
     }
 }

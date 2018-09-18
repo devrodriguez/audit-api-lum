@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Enterprise;
+
 class EnterpriseController extends Controller
 {
     /**
@@ -13,7 +15,8 @@ class EnterpriseController extends Controller
      */
     public function index()
     {
-        //
+        $enterprises = Enterprise::all();
+        return response()->json($enterprises);
     }
 
     /**
@@ -24,7 +27,13 @@ class EnterpriseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $enterprise = Enterprise::create($data);
+
+        return response()->json([
+            'enterprise' => $enterprise,
+            'url' => "/enterprises/{$enterprise->id}"
+        ], 201);
     }
 
     /**
@@ -35,7 +44,7 @@ class EnterpriseController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Enterprise::findOrFail($id));
     }
 
     /**
@@ -47,7 +56,11 @@ class EnterpriseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $enterprise = Enterprise::findOrFail($id);
+        $enterprise->update($data);
+
+        return response()->json($enterprise, 200);
     }
 
     /**
@@ -58,6 +71,12 @@ class EnterpriseController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $enterprise = Enterprise::findOrFail($id);
+        $enterprise->delete();
+
+        return response()->json([
+            'message' => 'Deleted successfully',
+            'url' => "/api/enterprises"
+        ], 200);
     }
 }
