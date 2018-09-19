@@ -42,7 +42,7 @@ class AuditorController extends Controller
 
         return response()->json([
             'auditor' => $auditor,
-            'url' => "/auditors/{$auditor->id}"
+            'url' => "/api/auditors/{$auditor->id}"
         ], 201);
     }
 

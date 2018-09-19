@@ -15,8 +15,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        $roles = Role::all();
-        return $roles;
+        return response()->json(Role::all());
     }
 
     /**
@@ -27,7 +26,13 @@ class RoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $role = Role::create($data);
+
+        return response()->json([
+            'role' => $role,
+            'url' => "/api/roles/{$role->id}"
+        ], 201);
     }
 
     /**
@@ -38,7 +43,7 @@ class RoleController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Role::findOrFail($id));
     }
 
     /**
@@ -50,7 +55,11 @@ class RoleController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $role = Role::findOrFail($id);
+        $role->update($data);
+
+        return response()->json($role, 200);
     }
 
     /**
@@ -61,6 +70,11 @@ class RoleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Role::findOrFail($id)->delete();
+
+        return response()->json([
+            'message' => 'Deleted successfull',
+            'url' => '/api/roles'
+        ]);
     }
 }

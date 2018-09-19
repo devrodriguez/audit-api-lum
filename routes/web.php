@@ -15,6 +15,10 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/keygen', function() {
+    return str_random(32);
+});
+
 $router->group(['prefix' => 'api'], function($router) {
 
     $router->get('/audits', 'AuditController@index');
@@ -45,5 +49,11 @@ $router->group(['prefix' => 'api'], function($router) {
     $router->get('/enterprises/{id}', 'EnterpriseController@show');
     $router->put('/enterprises/{id}', 'EnterpriseController@update');
     $router->delete('/enterprises/{id}', 'EnterpriseController@destroy');
+
+    $router->get('/roles', 'RoleController@index');
+    $router->post('/roles', 'RoleController@store');
+    $router->get('/roles/{id}', 'RoleController@show');
+    $router->put('/roles/{id}', 'RoleController@update');
+    $router->delete('/roles/{id}', 'RoleController@destroy');
 
 });
