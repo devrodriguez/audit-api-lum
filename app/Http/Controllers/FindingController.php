@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Finding;
+
 class FindingController extends Controller
 {
     /**
@@ -13,7 +15,7 @@ class FindingController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Finding::all());
     }
 
     /**
@@ -24,7 +26,14 @@ class FindingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $finding = Finding::create($data);
+
+        return response()->json([
+            'finding' => $finding,
+            'message' => 'Finding created',
+            'url' => "/api/findings/{$finding->id}"
+        ]);
     }
 
     /**
@@ -35,7 +44,7 @@ class FindingController extends Controller
      */
     public function show($id)
     {
-        //
+        return response()->json(Finding::findOrFail($id));
     }
 
     /**
@@ -47,7 +56,14 @@ class FindingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+        $finding = Finding::findOrFail($id);
+        $finding->update($finding);
+
+        return response()->json([
+            'finding' => $finding,
+            'message' => 'Finding updated',
+        ]);
     }
 
     /**
@@ -58,6 +74,11 @@ class FindingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Finding::findOrFail($id)->delete();
+
+        return response()->json([
+            'message' => 'Finding deleted',
+            'url' => '/api/findings'
+        ]);
     }
 }

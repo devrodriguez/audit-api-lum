@@ -9,16 +9,22 @@ use App\Audit;
 
 class AuditController extends Controller
 {
+    public function index() {
+        return Audit::all();
+    }
+
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function all()
     {
         $audits = DB::table('audits')
         ->join('auditors', 'audits.auditor_id', 'auditors.id')
-        ->select('auditors.*', 'audits.*')
+        ->join('enterprises', 'audits.enterprise_id', 'enterprises.id')
+        ->leftJoin('audit_criteria', 'audit_criteria.audit_id', 'audits.id')
+        ->select('audits.*', 'auditors.*', 'audit_criteria.*', 'enterprises.*')
         ->get();
         return response()->json($audits);
     }
@@ -36,7 +42,7 @@ class AuditController extends Controller
 
         return response()->json([
             'audit' => $audit,
-            'url' => "/audits/{$audit->id}"
+            'url' => "/api/audits/{$audit->id}"
         ], 201);
     }
 
@@ -80,5 +86,15 @@ class AuditController extends Controller
             'message' => 'Deleted successfully',
             'url' => '/audits'
         ], 200);
+    }
+
+    public function addCriteria(Request $request) {
+        $data = $request->all();
+        $auditId = $data['audit_id'];
+        $criteriaId = $data['criteria_id'];
+        $audit = Audit::find($auditId);
+        $audit->criterias()->attach($criteriaId);
+
+        return response()->json($audit);
     }
 }

@@ -17,11 +17,7 @@ class CreateFindingsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('description', 2000);
-            $table->unsignedInteger('criteria_id');
             $table->timestamps();
-
-            // Foreign key
-            $table->foreign('criteria_id')->references('id')->on('criterias');
         });
     }
 
