@@ -23,7 +23,7 @@ class AuditorController extends Controller
     public function all() {
         $rolesUser = DB::table('auditors')
         ->join('roles', 'auditors.role_id', '=', 'roles.id')
-        ->select('auditors.*', 'roles.*')
+        ->select('auditors.id, auditors.name, auditors.last_name', 'roles.title')
         ->get();
 
         return response()->json($rolesUser);
