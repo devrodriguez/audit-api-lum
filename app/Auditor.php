@@ -11,4 +11,10 @@ class Auditor extends Model
     public function role() {
         return $this->belongsTo(Role::class);
     }
+
+    public function audit()
+    {
+        return $this->hasMany(Audit::class);
+    }
+    
 }

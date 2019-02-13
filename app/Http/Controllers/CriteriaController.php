@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Criteria;
+use App\Audit;
 
 class CriteriaController extends Controller
 {
@@ -77,4 +78,6 @@ class CriteriaController extends Controller
             'url' => '/api/criterias'
         ]);
     }
+
+    // --
 }

@@ -22,13 +22,15 @@ $router->get('/keygen', function() {
 $router->group(['prefix' => 'api'], function($router) {
 
     $router->get('/audits', 'AuditController@index');
+    $router->get('/audits/all', 'AuditController@all');
     $router->post('/audits', 'AuditController@store');
     $router->get('/audits/{id}', 'AuditController@show');
     $router->put('/audits/{id}', 'AuditController@update');
     $router->delete('/audits/{id}', 'AuditController@destroy');
+    $router->post('/audits/criteria', 'AuditController@addCriteria');
 
     $router->get('/auditors', 'AuditorController@index');
-    $router->get('/auditors_full', 'AuditorController@full');
+    $router->get('/auditors/all', 'AuditorController@all');
     $router->post('/auditors', 'AuditorController@store');
     $router->get('/auditors/{id}', 'AuditorController@show');
     $router->put('/auditors/{id}', 'AuditorController@update');

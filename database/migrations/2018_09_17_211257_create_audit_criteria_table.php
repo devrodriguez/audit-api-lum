@@ -17,13 +17,14 @@ class CreateAuditCriteriaTable extends Migration
             $table->increments('id');
             $table->unsignedInteger('audit_id');
             $table->unsignedInteger('criteria_id');
-            $table->unsignedInteger('finding_id');
             $table->timestamps();
 
             // Foreign keys
             $table->foreign('audit_id')->references('id')->on('audits');
-            $table->foreign('criteria_id')->references('id')->on('criterias');
-            $table->foreign('finding_id')->references('id')->on('findings');
+            $table->foreign('criteria_id')->references('id')->on('criterias');            
+
+            // Primary key
+            //$table->primary(['audit_id', 'criteria_id']);
         });
     }
 
