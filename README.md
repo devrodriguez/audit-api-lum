@@ -21,12 +21,16 @@ php artisan make:auth
 -- Crear controlador (--resource Crea los metodos del controlador), (--model crea el modelo para dicho controlador)
 php artisan make:controller PhotoController --resource --model=Photo
 
+
 -- Crear modelo. Con -m crea la migracion.
 * El nombre del modelo debe ser singular y en ingles
 php artisan make:model ModelName -m
 
 -- Crear una migracion
 php artisan make:migration nombre_migracion --create=nombre_tabla
+
+-- Ejecutar una migracion
+php artisan migrate
 
 -- Ejecutar migracion. Crea las tablas nuevamente y ejecuta seeder
 php artisan migrate:refresh --seed
@@ -75,3 +79,6 @@ $data = request()->validate([
 # LUMEN
 - Start server
 php -S localhost:8000 -t public
+
+- Add Lumen Generator
+composer require flipbox/lumen-generator
